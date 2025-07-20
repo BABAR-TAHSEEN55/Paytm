@@ -1,9 +1,9 @@
-import { Express, Request, Response } from "express";
+import { Express, Request, Response, Router } from "express";
 import { CreateUserHandler } from "./controllers/user.controller.ts";
 
-export const Routes = (app: Express) => {
-    app.get("/healthcheck", (req: Request, res: Response) => {
-        res.sendStatus(200);
-    });
-    app.post("/signin", CreateUserHandler);
-};
+const router = Router();
+router.get("/healthcheck", (req: Request, res: Response) =>
+    res.sendStatus(200),
+);
+router.post("/user/signup", CreateUserHandler);
+export const Routes = router;
