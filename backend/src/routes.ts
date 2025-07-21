@@ -6,4 +6,5 @@ router.get("/healthcheck", (req: Request, res: Response) =>
     res.sendStatus(200),
 );
 router.post("/user/signup", CreateUserHandler);
+router.post("/user/signin");
 export const Routes = router;
