@@ -1,3 +1,4 @@
+import { omit } from "lodash";
 import UserModel, { UserDocument } from "../models/User.model.ts";
 
 type UserParams = Pick<UserDocument, "email" | "username" | "password">;
@@ -13,4 +14,22 @@ export const CreateUser = async (input: UserParams) => {
     } catch (error) {
         console.log("Error while creating User", error);
     }
+};
+export const ValidatePassword = async ({
+    email,
+    password,
+}: {
+    email: string;
+    password: string;
+}) => {
+    const User = await UserModel.findOne({ email });
+    if (!User) {
+        console.log("User doesn't Exists");
+        return false;
+    }
+    const IsValid = await User.ComparePassword(password);
+    if (!IsValid) {
+        return false;
+    }
+    return omit(User?.toJSON(), "password");
 };
