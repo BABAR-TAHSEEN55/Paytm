@@ -6,6 +6,6 @@ export const CreateSession = async (input: SessionParams) => {
         const Session = await SessionModel.create(input);
         return Session?.toJSON();
     } catch (error) {
-        console.log("Error while creating a Session");
+        console.log("Error while creating a Session", error);
     }
 };
