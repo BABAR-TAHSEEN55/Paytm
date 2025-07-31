@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { CreateUser } from "../services/User.Service.ts";
+import UserModel from "../models/User.model.ts";
 
 export const CreateUserHandler = async (req: Request, res: Response) => {
     try {
@@ -13,4 +14,22 @@ export const CreateUserHandler = async (req: Request, res: Response) => {
     } catch (error) {
         console.log("Error in User", error);
     }
+};
+export const BulkUser = async (req: Request, res: Response) => {
+    const filter = req.query.filter || "";
+    const BulkUser = await UserModel.find({
+        $or: [
+            {
+                username: {
+                    $regex: filter,
+                },
+            },
+        ],
+    });
+    res.json({
+        Users: BulkUser.map((user) => ({
+            username: user.username,
+            _id: user._id,
+        })),
+    });
 };
