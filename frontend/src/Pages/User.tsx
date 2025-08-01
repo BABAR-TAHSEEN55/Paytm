@@ -22,10 +22,10 @@ const User = () => {
   }, [filter]);
   return (
     <div>
-      <h1 className="py-8 text-2xl font-semibold">Users</h1>
+      <h1 className="py-3 text-2xl font-semibold">Users</h1>
       <InputBox
-        label="Money"
-        placeholder="Enter your money"
+        label="Username"
+        placeholder="Enter your Username"
         onChange={(e) => {
           setFilter(e.target.value);
         }}
