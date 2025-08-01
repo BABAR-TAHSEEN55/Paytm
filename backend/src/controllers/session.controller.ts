@@ -3,6 +3,7 @@ import { ValidatePassword } from "../services/User.Service.ts";
 import { CreateSession } from "../services/Session.Service.ts";
 import { SignJWT } from "../utils/jwt.utils.ts";
 import config from "config";
+import { CreateAccount } from "../services/Account.Service.ts";
 
 export const CreateSessionHandler = async (req: Request, res: Response) => {
     const ValidatedUser = await ValidatePassword(req.body);
@@ -32,5 +33,11 @@ export const CreateSessionHandler = async (req: Request, res: Response) => {
         },
         { expiresIn: config.get("RefreshTokenTTl") },
     );
+
+    await CreateAccount({
+        UserId: ValidatedUser._id,
+        Balance: 1 + Math.floor(Math.random() * 10000),
+    });
+
     res.send({ AccessToken, RefreshToken });
 };

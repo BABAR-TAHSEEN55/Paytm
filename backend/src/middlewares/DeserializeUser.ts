@@ -22,9 +22,9 @@ export const DeserializeUser = (
   if (!AccessToken) {
     return next();
   }
-  ``;
+  
   try {
-    const { decoded, _expired } = VerifyJWT(AccessToken);
+    const { decoded, expired } = VerifyJWT(AccessToken);
     if (decoded) {
       req.user = decoded as JwtCustomPayload;
       return next();
@@ -32,4 +32,7 @@ export const DeserializeUser = (
   } catch (error) {
     console.log("Error while decoding ", error);
   }
+  
+  // Always call next() even if token verification fails
+  next();
 };
