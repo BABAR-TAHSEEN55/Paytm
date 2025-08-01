@@ -1,7 +1,21 @@
+import { useEffect, useState } from "react";
 import InputBox from "../Components/InputBox";
 import User from "./User";
+import axios from "axios";
 
 const DashBoard = () => {
+  const [balance, setBalance] = useState(0);
+  useEffect(() => {
+    axios
+      .get("http://localhost:9000/api/v1/user/balance", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        setBalance(res.data.Balance);
+      });
+  }, []);
   return (
     <div className="w-full p-6 min-h-screen bg-purple-400/40 ">
       <div className="flex justify-between">
@@ -11,14 +25,8 @@ const DashBoard = () => {
           <div className="size-9 bg-gray-400 rounded-full"></div>
         </div>
       </div>
-      <div className="py-10 font-bold  text-xl ">Your Balance : $10000</div>
+      <div className="py-6 font-bold  text-xl ">Your Balance : ${balance}</div>
       <div>
-        <h1 className="py-8 text-2xl font-semibold">Users</h1>
-        <InputBox
-          label="Money"
-          placeholder="Enter your money"
-          onChange={() => {}}
-        />
         <User />
       </div>
     </div>
