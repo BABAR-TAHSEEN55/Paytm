@@ -7,7 +7,7 @@ import {
     Transaction,
 } from "./controllers/Account.controller.ts";
 const router = Router();
-router.get("/healthcheck", (req: Request, res: Response) =>
+router.get("/healthcheck", (_req: Request, res: Response) =>
     res.sendStatus(200),
 );
 router.post("/user/signup", CreateUserHandler);
