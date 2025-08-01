@@ -42,6 +42,11 @@ export const Transaction = async (req: AuthenticatedRequest, res: Response) => {
     const Session = await mongoose.startSession();
     Session.startTransaction();
     const { amount, to } = req.body;
+    console.log("This is ReqBody from trans", req.body);
+    if (!amount || !to) {
+        res.status(404).send("Missing amount or Recipient");
+        return;
+    }
     //This is inside The Mongoose Session
     const Account = await AccountModel.findOne({ UserId }).session(Session);
     if (!Account || Account.Balance < amount) {
