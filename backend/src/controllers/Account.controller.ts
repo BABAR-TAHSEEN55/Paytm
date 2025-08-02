@@ -3,6 +3,7 @@ import { AuthenticatedRequest } from "../middlewares/DeserializeUser.ts";
 import { CreateAccount } from "../services/Account.Service.ts";
 import AccountModel from "../models/Account.model.ts";
 import mongoose from "mongoose";
+import TransactionModel from "../models/Transaction.model.ts";
 
 export const CreateAccountHanlder = async (
     req: AuthenticatedRequest,
@@ -42,7 +43,6 @@ export const Transaction = async (req: AuthenticatedRequest, res: Response) => {
     const Session = await mongoose.startSession();
     Session.startTransaction();
     const { amount, to } = req.body;
-    console.log("This is ReqBody from trans", req.body);
     if (!amount || !to) {
         res.status(404).send("Missing amount or Recipient");
         return;
@@ -51,7 +51,9 @@ export const Transaction = async (req: AuthenticatedRequest, res: Response) => {
     const Account = await AccountModel.findOne({ UserId }).session(Session);
     if (!Account || Account.Balance < amount) {
         await Session.abortTransaction();
-        return res.status(400).json({ message: "Insufficient Balance" });
+        return res
+            .status(400)
+            .json({ message: "Insufficient Balance | Account doesn't exist" });
     }
     const toAccount = await AccountModel.findOne({ UserId: to }).session(
         Session,
@@ -78,6 +80,39 @@ export const Transaction = async (req: AuthenticatedRequest, res: Response) => {
             },
         },
     ).session(Session);
+
+    await TransactionModel.create(
+        {
+            from: UserId,
+            to,
+            amount,
+            status: "SUCCESS",
+        },
+        { session: Session },
+    );
     await Session.commitTransaction();
     res.status(200).send("Transaction successfull!!!");
+};
+export const GetTransactionHistory = async (
+    req: AuthenticatedRequest,
+    res: Response,
+) => {
+    const UserId = req.user?._id;
+    if (!UserId) {
+        res.status(400).send("Unauthorized");
+        return;
+    }
+    const TransactionHistory = await TransactionModel.find({
+        $or: [
+            {
+                from: UserId,
+            },
+            { to: UserId },
+        ],
+    })
+        .populate("from", "username")
+        .populate("to", "username")
+        .sort({ createdAt: -1 });
+
+    res.send({ TransactionHistory });
 };
