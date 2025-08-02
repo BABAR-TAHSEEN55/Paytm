@@ -4,6 +4,7 @@ import { CreateSessionHandler } from "./controllers/session.controller.ts";
 import {
     CreateAccountHanlder,
     GetBalance,
+    GetTransactionHistory,
     Transaction,
 } from "./controllers/Account.controller.ts";
 const router = Router();
@@ -15,5 +16,6 @@ router.post("/user/signin", CreateSessionHandler);
 router.get("/user/account", CreateAccountHanlder);
 router.get("/user/bulk", BulkUser);
 router.get("/user/balance", GetBalance);
+router.get("/user/history", GetTransactionHistory);
 router.post("/user/transactions", Transaction);
 export const Routes = router;
