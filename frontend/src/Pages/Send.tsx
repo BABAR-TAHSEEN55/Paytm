@@ -15,13 +15,13 @@ const Send = () => {
   const id = searchparams.get("id");
   console.log(id);
   return (
-    <div className="grid place-content-center bg-purple-400/30 min-h-screen">
-      <div className="w-full bg-purple-200 shadow-lg p-8">
+    <div className="grid place-content-center -purple-400/30 min-h-screen text-white">
+      <div className="w-full bg-[#222322]  shadow-lg p-8 rounded-xl">
         <h1 className="text-2xl text-center pb-8 font-bold ">Send Money</h1>
 
         <div className="flex space-x-5 items-center ">
           <div className="size-8 bg-gray-400 rounded-full"></div>
-          <h1 className="text-xl">{username}</h1>
+          <h1 className="text-xl ">{username}</h1>
         </div>
 
         <InputBox
@@ -35,10 +35,6 @@ const Send = () => {
           button="Initiate Transfer"
           onClick={async () => {
             try {
-              console.log("About to send:");
-              console.log("Amount:", amount, typeof amount);
-              console.log("To ID:", id, typeof id);
-
               await axios.post(
                 "http://localhost:9000/api/v1/user/transactions",
                 {
@@ -52,10 +48,9 @@ const Send = () => {
                 }
               );
               toast.success("Transfer sucessfull!");
-              navigate("/DashBoard");
+              navigate("/ui");
             } catch (error) {
               // console.log("Transaction Failed : ", error);
-              toast.error("Transaction Failed!");
               toast.error("Insufficient Balance! Brokie");
             }
           }}
@@ -66,3 +61,8 @@ const Send = () => {
 };
 
 export default Send;
+
+//TODO : 1) Notification -> Request Feature
+// 3) UI -> Popup Lag Solved
+// 4) SignUp / SignIn floating Circle
+// 5) Search in PopUp

@@ -13,7 +13,7 @@ const SignUp = () => {
   const [password, SetPassword] = useState("");
   return (
     <div className="grid place-content-center min-h-screen bg-blue-200">
-      <div className=" m-4 md:w-full bg-blue/80 shadow-lg p-4 rounded-xl">
+      <div className=" m-4 md:w-full  shadow-lg p-4 rounded-xl">
         <Heading label="SignUp" />
         <SubHeading subheading="Enter your information to create an Account" />
         <InputBox

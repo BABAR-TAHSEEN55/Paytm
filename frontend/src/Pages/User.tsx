@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 import InputBox from "../Components/InputBox";
 import { useNavigate } from "react-router-dom";
 
-interface UserType {
+export interface UserType {
   username: string;
   _id: number;
 }
-interface UserProps {
+export interface UserProps {
   user: UserType;
 }
 const User = () => {
