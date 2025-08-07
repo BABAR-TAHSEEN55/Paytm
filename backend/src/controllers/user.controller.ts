@@ -20,10 +20,16 @@ export const CreateUserHandler = async (
         console.log("Error in User", error);
     }
 };
-export const BulkUser = async (req: Request, res: Response) => {
+export const BulkUser = async (req: AuthenticatedRequest, res: Response) => {
     const filter = req.query.filter || "";
+    const LoggedInUser = req.user?._id;
     const BulkUser = await UserModel.find({
-        $or: [
+        $and: [
+            {
+                _id: {
+                    $ne: LoggedInUser,
+                },
+            },
             {
                 username: {
                     $regex: filter,
