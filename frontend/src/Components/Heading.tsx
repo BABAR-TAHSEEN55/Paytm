@@ -1,10 +1,8 @@
 interface LabelProp {
-  label: string;
+	label: string;
 }
 const Heading = ({ label }: LabelProp) => {
-  return (
-    <div className="font-mono uppercase text-4xl text-center py-2">{label}</div>
-  );
+	return <div className="font-mono  text-4xl text-center py-2">{label}</div>;
 };
 
 export default Heading;
