@@ -7,13 +7,15 @@ interface UserType {
 	username: string;
 	_id: number;
 }
-interface UserProps {
-	user: UserType;
+export interface UserProps {
+	user?: UserType;
+	type?: "transfer" | "request";
 }
 interface ModalProps {
 	onClose: () => void;
+	type: "transfer" | "request";
 }
-const Modal = ({ onClose }: ModalProps) => {
+const Modal = ({ type, onClose }: ModalProps) => {
 	const [loader, setLoader] = useState(false);
 	const [filter, setFilter] = useState("");
 	const [users, setUsers] = useState<UserType[]>([]);
@@ -39,7 +41,10 @@ const Modal = ({ onClose }: ModalProps) => {
 		<div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm text-white flex items-center justify-center z-50">
 			<div className="container mx-auto max-w-2xl rounded-xl shadow-lg bg-[#222322] p-6">
 				<div className="flex justify-between items-center mb-4">
-					<h2 className="text-xl font-bold">Send Money</h2>
+					<h2 className="text-xl font-bold">
+						{type == "transfer" ? "Send Money" : "Request Money"}
+						{/*Send Money*/}
+					</h2>
 					<button onClick={onClose} className="hover:bg-gray-700 p-1 rounded">
 						<X />
 					</button>
@@ -110,7 +115,7 @@ const Modal = ({ onClose }: ModalProps) => {
 				) : (
 					<div className="max-h-60 overflow-y-auto">
 						{users.length > 0 ? (
-							users.map((user) => <Users key={user._id} user={user} />)
+							users.map((user) => <Users key={user._id} user={user} type={type} />)
 						) : (
 							<p className="font-bold text-center mt-4">No User exist</p>
 						)}
@@ -123,7 +128,7 @@ const Modal = ({ onClose }: ModalProps) => {
 
 export default Modal;
 
-const Users = ({ user }: UserProps) => {
+const Users = ({ user, type }: UserProps) => {
 	const navigate = useNavigate();
 	return (
 		<>
@@ -139,7 +144,8 @@ const Users = ({ user }: UserProps) => {
 						navigate("/send?id=" + user._id + "&username=" + user.username);
 					}}
 				>
-					Send Money
+					{/*Send Money*/}
+					{type == "transfer" ? "Send Money" : "Request Money "}
 				</button>
 			</div>
 		</>
