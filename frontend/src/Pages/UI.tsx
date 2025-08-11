@@ -18,12 +18,12 @@ interface History {
 
 const UI = () => {
 	const [balance, setBalance] = useState(0);
-	const [Toggle, setToggle] = useState(false);
+	const [Toggle, setToggle] = useState<"transfer" | "request" | null>(null);
 	const [UserHistory, setUserHistory] = useState<History[]>([]);
 	const [Loading, setLoading] = useState(false);
-	const HandleToggle = () => {
-		setToggle((prev) => !prev);
-	};
+	// const HandleToggle = () => {
+	// 	setToggle((prev) => !prev);
+	// };
 	useEffect(() => {
 		axios
 			.get("http://localhost:9000/api/v1/user/balance", {
@@ -70,11 +70,20 @@ const UI = () => {
 				</div>
 				<div className="container rounded-xl bg-[#222322]   p-6 mt-4 max-w-2xl z-50">
 					<div className="flex justify-between ">
-						<button className="bg-black rounded-xl px-3 py-2.5 hover:bg-[#2F0333] " onClick={HandleToggle}>
+						<button
+							className="bg-black rounded-xl px-3 py-2.5 hover:bg-[#2F0333] "
+							// onClick={HandleToggle}
+
+							onClick={() => setToggle("transfer")}
+						>
 							Transfer
 						</button>
-						<button className="bg-black rounded-xl px-3 py-2.5 hover:bg-[#2F0333] " onClick={HandleToggle}>
-							Receive
+						<button
+							className="bg-black rounded-xl px-3 py-2.5 hover:bg-[#2F0333] "
+							// onClick={HandleToggle}>
+							onClick={() => setToggle("request")}
+						>
+							Request
 						</button>
 					</div>
 				</div>
@@ -173,7 +182,7 @@ const UI = () => {
 					</div>
 				)}
 			</div>
-			{Toggle && <Modal onClose={HandleToggle} />}
+			{Toggle && <Modal type={Toggle} onClose={() => setToggle(null)} />}
 			{/* <div style={{ height: "100vh" }}></div> */}
 			{/* <Modal /> */}
 		</>
