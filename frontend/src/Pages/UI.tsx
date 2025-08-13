@@ -59,7 +59,7 @@ const UI = () => {
 	}, []);
 	return (
 		<>
-			<div className=" m-4 min-h-screen text-white py-20  relative z-0">
+			<div className=" m-4 min-h-full text-white py-20  relative z-0">
 				<div className="fixed inset-0 bg-[#2F0333] [mask-image:radial-gradient(80%_20%_at_50%_15%,black,transparent)] -z-10" />
 				<div className="container rounded-xl transparent shadow-lg border border-white/30 p-6 max-w-2xl relative ">
 					<p className="text-5xl tracking-widest font-bold text-center">${balance}</p>
