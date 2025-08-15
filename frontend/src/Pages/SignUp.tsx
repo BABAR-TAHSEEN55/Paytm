@@ -6,6 +6,7 @@ import SubHeading from "../Components/SubHeading";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import BottomWarning from "../Components/BottomWarning";
+import { toast } from "react-toastify";
 
 const SignUp = () => {
 	const navigate = useNavigate();
@@ -33,8 +34,9 @@ const SignUp = () => {
 							if (response.status == 200 || response.status == 201) {
 								navigate("/signin");
 							}
-						} catch (error) {
-							console.log("SignUp Error : ", error);
+						} catch {
+							// console.log("SignUp Error : ", error);
+							toast.error("Invalid or Password or Email");
 						}
 					}}
 					button="SignUP"

@@ -6,23 +6,23 @@ import InputBox from "../Components/InputBox";
 import axios from "axios";
 import { useState } from "react";
 
-interface SendOrReceive {
-	type?: "transfer" | "receive";
-}
-const Send = ({ type }: SendOrReceive) => {
+// interface SendOrReceive {
+// 	type: "transfer" | "receive" | null;
+// }
+const Send = () => {
 	const navigate = useNavigate();
 	const [searchparams] = useSearchParams();
 	const [amount, SetAmount] = useState(0);
 	const username = searchparams.get("username");
-	console.log(username);
+	// console.log(username);
 	const id = searchparams.get("id");
-	console.log(id);
+	// console.log(id);
+	const type = searchparams.get("type");
 	return (
 		<div className="grid place-content-center -purple-400/30 min-h-screen text-white">
 			<div className="w-full bg-[#222322]  shadow-lg p-14 rounded-xl ">
 				<h1 className="text-2xl text-center pb-8 font-bold ">
 					{type == "transfer" ? "Send Money" : "Request Money"}
-					{/*Send Money*/}
 				</h1>
 
 				<div className="flex space-x-5 items-center ">
@@ -58,7 +58,6 @@ const Send = ({ type }: SendOrReceive) => {
 								toast.success("Transfer sucessfull!");
 								navigate("/ui");
 							} catch {
-								// console.log("Transaction Failed : ", error);
 								toast.error("Insufficient Balance! Brokie");
 							}
 						} else {
@@ -90,8 +89,5 @@ const Send = ({ type }: SendOrReceive) => {
 };
 
 export default Send;
-
-//TODO : 1) Notification -> Request Feature // Most prolly
-//SHIP BEFORE 10TH INSHALLAH
 
 // 4) SignUp / SignIn floating Circle & already have an account page

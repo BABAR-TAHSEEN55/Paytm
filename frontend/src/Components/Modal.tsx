@@ -31,7 +31,7 @@ const Modal = ({ type, onClose }: ModalProps) => {
 				setUsers(res.data.Users);
 			})
 			.catch((err) => {
-				console.log("Error while fetching data", err);
+				console.log("Error while getting user from Db", err);
 			})
 			.finally(() => {
 				setLoader(false);
@@ -117,7 +117,7 @@ const Modal = ({ type, onClose }: ModalProps) => {
 						{users.length > 0 ? (
 							users.map((user) => <Users key={user._id} user={user} type={type} />)
 						) : (
-							<p className="font-bold text-center mt-4">No User exist</p>
+							<p className="font-bold text-center mt-4">No Users exist</p>
 						)}
 					</div>
 				)}
@@ -141,7 +141,7 @@ const Users = ({ user, type }: UserProps) => {
 				<button
 					className="bg-black px-1 py-1.5 rounded-xl text-white  hover:bg-[#2F0333]  "
 					onClick={() => {
-						navigate("/send?id=" + user._id + "&username=" + user.username);
+						navigate("/send?id=" + user._id + "&username=" + user.username + `&type=${type}`);
 					}}
 				>
 					{/*Send Money*/}

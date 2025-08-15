@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import Floating from "./Floating";
 import ButtonWarning from "../Components/ButtonWarning";
 import BottomWarning from "../Components/BottomWarning";
+import { toast } from "react-toastify";
 
 const SignIn = () => {
 	const [email, setEmail] = useState("");
@@ -31,10 +32,11 @@ const SignIn = () => {
 							});
 							const { AccessToken } = response.data;
 							localStorage.setItem("token", AccessToken);
-							console.log("AccessToken : ", AccessToken);
+							// console.log("AccessToken : ", AccessToken);
 							navigate("/ui");
-						} catch (error) {
-							console.log("Error while Signing user Up", error);
+						} catch {
+							// console.log("Error while Signing user Up", error);
+							toast.error("Invalid Email or Password");
 						}
 					}}
 				/>
