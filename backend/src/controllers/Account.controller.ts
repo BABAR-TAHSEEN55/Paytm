@@ -35,7 +35,7 @@ export const GetBalance = async (req: AuthenticatedRequest, res: Response) => {
         res.status(404).send("Account doesn't exists");
         return;
     }
-    res.send({ Balance: Account.Balance });
+    res.send({ Balance: Account.Balance, _id: UserId });
 };
 export const Transaction = async (req: AuthenticatedRequest, res: Response) => {
     // Starting a Session
