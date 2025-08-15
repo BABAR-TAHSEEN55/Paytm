@@ -1,5 +1,9 @@
 import { Request, Response, Router } from "express";
-import { BulkUser, CreateUserHandler } from "./controllers/user.controller.ts";
+import {
+    BulkUser,
+    CreateUserHandler,
+    ListUserDetails,
+} from "./controllers/user.controller.ts";
 import { CreateSessionHandler } from "./controllers/session.controller.ts";
 import {
     CreateAccountHanlder,
@@ -10,6 +14,7 @@ import {
 import {
     GetAllRequests,
     ReceiveHandler,
+    ResponseToRequest,
 } from "./controllers/Receive.controller.ts";
 const router = Router();
 router.get("/healthcheck", (_req: Request, res: Response) =>
@@ -24,4 +29,7 @@ router.get("/user/history", GetTransactionHistory);
 router.post("/user/transactions", Transaction);
 router.post("/user/request", ReceiveHandler);
 router.get("/user/request", GetAllRequests);
+router.get("/user/details", ListUserDetails);
+router.get("/user/request-to-response",ResponseToRequest );
+// http://localhost:9000/api/v1/response-to-request
 export const Routes = router;
