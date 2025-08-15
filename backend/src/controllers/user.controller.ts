@@ -44,3 +44,13 @@ export const BulkUser = async (req: AuthenticatedRequest, res: Response) => {
         })),
     });
 };
+export const ListUserDetails = async (
+    req: AuthenticatedRequest,
+    res: Response,
+) => {
+    const UserId = req.user?._id;
+    console.log("USerId in the List", UserId);
+
+    const GetDetails = await UserModel.findById(UserId);
+    res.status(200).send({ GetDetails });
+};
