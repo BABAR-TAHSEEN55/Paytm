@@ -101,11 +101,10 @@ export const ResponseToRequest = async (
 
     await TransactionModel.create(
         {
-            // from: UserId,
-            from: from,
-            to,
+            from: to,
+            to: from,
             amount,
-            status: "SUCCESS",
+            status: "RECEIVE",
         },
         { session: Session },
     );
