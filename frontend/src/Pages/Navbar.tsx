@@ -3,6 +3,7 @@ import { Bell } from "lucide-react";
 import { useEffect, useState } from "react";
 import DashBoard from "./DashBoard";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const Navbar = () => {
 	const [username, setUsername] = useState("");
 	useEffect(() => {
@@ -17,12 +18,18 @@ const Navbar = () => {
 				setUsername(res.data.GetDetails.username);
 			})
 			.catch((err) => {
-				console.log("Erro while gettiing dtails", err);
+				console.log("Error while getting users from DB", err);
 			});
 	}, []);
 	const [Toggle, setToggle] = useState(false);
 	const HandleToggle = () => {
 		setToggle((prev) => !prev);
+	};
+	const navigate = useNavigate();
+
+	const HandleLogout = () => {
+		localStorage.removeItem("token");
+		navigate("/");
 	};
 
 	return (
@@ -38,6 +45,7 @@ const Navbar = () => {
 					<button onClick={HandleToggle}>
 						<Bell />
 					</button>{" "}
+					<p onClick={HandleLogout}>Logout</p>
 				</div>
 			</div>
 			<div className="bg-red-200">{Toggle && <DashBoard />}</div>

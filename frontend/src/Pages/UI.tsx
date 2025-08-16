@@ -8,12 +8,14 @@ interface History {
 	amount: string;
 	from: {
 		username: string;
+		_id?: string;
 	};
 	to: {
 		username: string;
+		_id: string;
 	};
 	status?: string;
-	createdAt?: string; //why is this not date?
+	createdAt?: string;
 }
 
 const UI = () => {
@@ -21,9 +23,8 @@ const UI = () => {
 	const [Toggle, setToggle] = useState<"transfer" | "request" | null>(null);
 	const [UserHistory, setUserHistory] = useState<History[]>([]);
 	const [Loading, setLoading] = useState(false);
-	// const HandleToggle = () => {
-	// 	setToggle((prev) => !prev);
-	// };
+	const [LoggedInUser, setLoggedInUser] = useState("");
+
 	useEffect(() => {
 		axios
 			.get("http://localhost:9000/api/v1/user/balance", {
@@ -33,6 +34,8 @@ const UI = () => {
 			})
 			.then((res) => {
 				setBalance(res.data.Balance);
+				setLoggedInUser(res.data._id);
+				console.log("Rerenders");
 			});
 	}, []);
 
@@ -47,7 +50,7 @@ const UI = () => {
 				},
 			})
 			.then((res) => {
-				console.log("This is the  ", res.data);
+				// console.log("This is the  ", res.data);
 				setUserHistory(res.data.TransactionHistory);
 			})
 			.catch((err) => {
@@ -65,7 +68,9 @@ const UI = () => {
 					<p className="text-5xl tracking-widest font-bold text-center">${balance}</p>
 					<div className="flex items-center justify-center">
 						{/* Arrow */}
-						<p className="text-center text-white/50 py-3">29.5%</p>
+						{/*TODO*/}
+						{/*WRite Somethinghere*/}
+						<p className="text-center text-white/50 py-3"></p>
 					</div>
 				</div>
 				<div className="container rounded-xl bg-[#222322]   p-6 mt-4 max-w-2xl z-50">
@@ -94,7 +99,7 @@ const UI = () => {
 
 						{UserHistory.length > 0 ? (
 							UserHistory.map((user) => (
-								<div>
+								<div key={user._id}>
 									<p className="font-bold ">
 										{user.createdAt
 											? new Date(user.createdAt).toLocaleDateString("en-GB", {
@@ -108,15 +113,25 @@ const UI = () => {
 													year: "numeric",
 												})}
 									</p>
-									<div className="mt-2 flex space-x-4 items-center  justify-between">
-										<div className="flex items-center justify-center space-x-4">
-											<div className="size-12 bg-red-200 rounded-full flex items-center justify-center text-xl mb-4">
-												{user.to.username.charAt(0)}
+
+									<div className="mt-6  mb-6 flex space-x-5 items-center  justify-between ">
+										<div className="flex items-center  space-x-4 justify-center">
+											<div className="size-12 bg-purple-300 rounded-full flex items-center justify-center text-xl text-black">
+												{/*{user.to.username.charAt(0)}*/}
+												{user.to.username.charAt(
+													Math.floor(Math.random() * user.to.username.length),
+												)}
 											</div>
-											<p className="lowercase ">{user.to.username}</p>
+											<p className="lowercase">
+												{user.from._id === LoggedInUser ? user.to.username : user.from.username}
+											</p>
 										</div>
 
-										<p className="text-lg text-red-500">- $ {user.amount}</p>
+										{user.from._id == LoggedInUser ? (
+											<p className="text-lg text-red-500">- $ {user.amount}</p>
+										) : (
+											<p className="text-lg text-green-500">+ ${user.amount}</p>
+										)}
 									</div>
 									{/* <div className="w-full h-1 border-dashed bg-white mt-4"></div> */}
 								</div>

@@ -13,7 +13,8 @@ interface RequestState {
 const DashBoard = () => {
 	// const [balance, setBalance] = useState(0);
 	const [Request, setRequest] = useState<RequestState[]>([]);
-	const [Refresh, setRefresh] = useState(0);
+	// const [Refresh, setRefresh] = useState(0);
+
 	useEffect(() => {
 		axios
 			.get("http://localhost:9000/api/v1/user/request", {
@@ -25,7 +26,7 @@ const DashBoard = () => {
 				setRequest(res.data.IncomingRequest);
 				// console.log("Result:", res.data.IncomingRequest);
 			});
-	}, [Refresh]);
+	}, []);
 	const HanldeReuqest = async (requestId: string) => {
 		try {
 			setRequest((prev) => prev.filter((req) => req._id != requestId));
@@ -34,11 +35,10 @@ const DashBoard = () => {
 					Authorization: "Bearer " + localStorage.getItem("token"),
 				},
 			});
-			toast.success("Succesffully");
-			setRefresh((prev) => prev + 1);
+			toast.success("Transfer Successfull");
 		} catch {
 			toast.error("something went wrong");
-			setRefresh((prev) => prev + 1);
+			// setRefresh((prev) => prev + 1);
 		}
 	};
 
