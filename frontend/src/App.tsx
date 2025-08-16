@@ -7,17 +7,18 @@ import { ToastContainer } from "react-toastify";
 import UI from "./Pages/UI";
 import Navbar from "./Pages/Navbar";
 import Floating from "./Pages/Floating";
+import DashBoard from "./Pages/DashBoard";
 
 const App = () => {
 	return (
 		<BrowserRouter>
-			{/*<Navbar />*/}
+			<Navbar />
 			<Routes>
 				<Route path="/" element={<SignUp />} />
 				<Route path="/ui" element={<UI />} />
-				<Route path="/cir" element={<Floating />} />
+				{/*<Route path="/cir" element={<Floating />} />*/}
 				<Route path="/signin" element={<SignIn />} />
-				{/*<Route path="/dashboard" element={<DashBoard />} />*/}
+				<Route path="/dashboard" element={<DashBoard />} />
 				<Route path="/send" element={<Send />} />
 			</Routes>
 			<ToastContainer position="top-right" />
