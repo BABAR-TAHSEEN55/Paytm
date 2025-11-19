@@ -19,4 +19,3 @@ app.use("/api/v1/", Routes);
         console.log(`Server started Successfully at ${PORT}`),
     );
 })();
-
