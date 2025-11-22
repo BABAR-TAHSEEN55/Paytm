@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Bell, CreditCard, User, LogOut, ThermometerSnowflake } from "lucide-react";
+import { Menu } from 'lucide-react';
+import { Bell, CreditCard, User, LogOut } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -60,7 +61,7 @@ const Navbar: React.FC = () => {
           </span>
         </motion.div>
 
-        <div className="md:hidden"><ThermometerSnowflake/></div>
+        <div className="md:hidden"><Menu/></div>
         {/* Right Actions */}
         <div className="md:flex items-center gap-4 hidden ">
           <motion.button
