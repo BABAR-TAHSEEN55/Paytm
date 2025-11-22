@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { UserDocument } from "./User.model.ts";
-import { mongo } from "mongoose";
+
 
 export interface SessionDocument extends mongoose.Document {
     UserId: UserDocument["_id"];
