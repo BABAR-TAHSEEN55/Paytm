@@ -10,7 +10,8 @@ import {
 import { toast } from "react-toastify";
 import axios from "axios";
 
-const Send: React.FC = () => {
+const Send = () => {
+  const ENDPOINT = import.meta.env.VITE_ENDPOINT_URL;
   const navigate = useNavigate();
   const [searchparams] = useSearchParams();
   const [amount, setAmount] = useState("");
@@ -33,7 +34,7 @@ const Send: React.FC = () => {
     try {
       if (isTransfer) {
         await axios.post(
-          "http://localhost:9000/api/v1/user/transactions",
+          `${ENDPOINT}/api/v1/user/transactions`,
           {
             amount: Number(amount),
             to: id,
@@ -47,7 +48,7 @@ const Send: React.FC = () => {
         toast.success("Transfer successful!");
       } else {
         await axios.post(
-          "http://localhost:9000/api/v1/user/request",
+          `${ENDPOINT}/api/v1/user/request`,
           {
             amount: Number(amount),
             to: id,

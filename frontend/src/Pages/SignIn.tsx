@@ -13,7 +13,8 @@ import {
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const SignIn: React.FC = () => {
+const SignIn = () => {
+  const ENDPOINT = import.meta.env.VITE_ENDPOINT_URL;
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
@@ -38,13 +39,10 @@ const SignIn: React.FC = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post(
-        "http://localhost:9000/api/v1/user/signin",
-        {
-          email: formData.email,
-          password: formData.password,
-        },
-      );
+      const response = await axios.post(`${ENDPOINT}/api/v1/user/signin`, {
+        email: formData.email,
+        password: formData.password,
+      });
 
       const { AccessToken } = response.data;
       localStorage.setItem("token", AccessToken);
@@ -61,7 +59,7 @@ const SignIn: React.FC = () => {
     <div className="min-h-screen bg-slate-950 relative flex items-center justify-center p-4 overflow-hidden">
       {/* Animated Background Elements */}
       {/*<div className="fixed inset-0 pointer-events-none bg-red">*/}
-        {/*<motion.div
+      {/*<motion.div
           animate={{
             x: [0, -100, 0],
             y: [0, 50, 0],
@@ -75,7 +73,7 @@ const SignIn: React.FC = () => {
           }}
           className="absolute top-20 left-10 w-80 h-80 bg-cyan-600/10 rounded-full blur-3xl"
         />*/}
-        {/*<motion.div
+      {/*<motion.div
           animate={{
             x: [0, 80, 0],
             y: [0, -60, 0],
@@ -90,8 +88,8 @@ const SignIn: React.FC = () => {
           className="absolute bottom-20 right-10 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl"
         />
 */}
-        {/* Floating particles */}
-        {/*{[...Array(8)].map((_, i) => (
+      {/* Floating particles */}
+      {/*{[...Array(8)].map((_, i) => (
           <motion.div
             key={i}
             animate={{
@@ -121,7 +119,6 @@ const SignIn: React.FC = () => {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="w-full max-w-md relative z-10"
       >
-
         <div className="relative bg-slate-900/80 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-8 shadow-2xl">
           {/* Header */}
           <motion.div

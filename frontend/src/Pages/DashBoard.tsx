@@ -8,10 +8,11 @@ import type { RequestState } from "../types";
 const DashBoard = () => {
   const [requests, setRequests] = useState<RequestState[]>([]);
   const [loading, setLoading] = useState(true);
+  const ENDPOINT = import.meta.env.VITE_ENDPOINT_URL;
 
   useEffect(() => {
     axios
-      .get("http://localhost:9000/api/v1/user/request", {
+      .get(`${ENDPOINT}/api/v1/user/request`, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
@@ -25,10 +26,11 @@ const DashBoard = () => {
       });
   }, []);
 
+  console.log(ENDPOINT);
   const handleRequest = async (requestId: string) => {
     try {
       setRequests((prev) => prev.filter((req) => req._id !== requestId));
-      await axios.get("http://localhost:9000/api/v1/user/request-to-response", {
+      await axios.get(`${ENDPOINT}/api/v1/user/request-to-response`, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },

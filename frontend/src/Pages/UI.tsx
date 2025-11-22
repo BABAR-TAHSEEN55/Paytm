@@ -1,4 +1,4 @@
-import  { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowUpRight,
@@ -23,6 +23,7 @@ const UI = () => {
   const [userHistory, setUserHistory] = useState<History[]>([]);
   const [loading, setLoading] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState("");
+  const ENDPOINT = import.meta.env.VITE_ENDPOINT_URL;
 
   // Mock chart data for demo
   const chartData: ChartDataPoint[] = [
@@ -37,7 +38,7 @@ const UI = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:9000/api/v1/user/balance", {
+      .get(`${ENDPOINT}/api/v1/user/balance`, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
@@ -73,7 +74,7 @@ const UI = () => {
   useEffect(() => {
     setLoading(true);
     axios
-      .get("http://localhost:9000/api/v1/user/history", {
+      .get(`${ENDPOINT}/api/v1/user/history`, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
@@ -132,14 +133,14 @@ const UI = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 via-blue-500/10 to-purple-500/10 blur-3xl rounded-3xl -z-10"></div>
 
           <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-3xl p-8 shadow-2xl relative overflow-hidden mx-4">
-            <div className="flex flex-col md:flex-row justify-between md:items-end items-start gap-8 relative z-10">
+            <div className="flex flex-col md:flex-row justify-between items-end gap-8 relative z-10">
               {/* Balance Text */}
               <div className="space-y-2">
-                <h2 className="text-slate-400 text-sm font-medium tracking-widest uppercase mb-4">
+                <h2 className="text-slate-400 text-sm font-medium tracking-widest uppercase">
                   Total Balance
                 </h2>
-                <div className="flex items-start gap-2  py-3">
-                  <span className="text-5xl   font-bold font-display text-white tracking-tighter">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-5xl sm:text-7xl font-bold font-display text-white tracking-tighter">
                     $
                     {animatedBalance.toLocaleString("en-US", {
                       minimumFractionDigits: 2,
@@ -154,7 +155,7 @@ const UI = () => {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex gap-4">
+              <div className="flex gap-4 ">
                 <motion.button
                   whileHover={{
                     scale: 1.02,
@@ -217,29 +218,6 @@ const UI = () => {
             </div>
           </div>
         </motion.div>
-        {/*.....*/}
-
-        {/*<div className="flex gap-4  max-w-[52rem] mx-auto justify-between">
-          <motion.button
-            whileHover={{
-              scale: 1.02,
-              boxShadow: "0 0 30px rgba(6,182,212,0.5)",
-            }}
-            whileTap={{ scale: 0.98 }}
-            className="bg-cyan-500 hover:bg-cyan-400 text-slate-950 px-6 py-3 rounded-xl font-bold transition-all shadow-[0_0_20px_rgba(6,182,212,0.3)] flex items-center gap-2"
-            onClick={() => setToggle("transfer")}
-          >
-            <ArrowUpRight size={20} /> Transfer
-          </motion.button>
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 px-6 py-3 rounded-xl font-bold transition-all"
-            onClick={() => setToggle("request")}
-          >
-            Request
-          </motion.button>
-        </div>*/}
 
         {/* Transaction History */}
         <div className="w-full max-w-4xl mx-auto px-4">
@@ -326,7 +304,7 @@ const UI = () => {
                         <div className="text-right relative z-10">
                           <p
                             className={`font-display font-bold text-lg ${
-                              isCredit ? "text-emerald-400" : "text-red-500"
+                              isCredit ? "text-emerald-400" : "text-white"
                             }`}
                           >
                             {isCredit ? "+" : "-"}$
