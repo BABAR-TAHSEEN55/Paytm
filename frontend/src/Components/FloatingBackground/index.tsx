@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 
 interface Particle {
 	id: number;
@@ -20,7 +20,7 @@ const FloatingBackground = ({ particleCount = 8, enableMouseInteraction = true }
 	const [particles, setParticles] = useState<Particle[]>([]);
 	const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
-	const colors = [
+	const colors = useMemo(() => [
 		"bg-purple-400",
 		"bg-blue-400",
 		"bg-pink-400",
@@ -29,10 +29,10 @@ const FloatingBackground = ({ particleCount = 8, enableMouseInteraction = true }
 		"bg-indigo-400",
 		"bg-red-400",
 		"bg-teal-400"
-	];
+	], []);
 
-	const sizes = ["size-12", "size-16", "size-20", "size-24", "size-28", "size-32"];
-	const variants: Array<"float" | "pulse" | "wiggle" | "orbit"> = ["float", "pulse", "wiggle", "orbit"];
+	const sizes = useMemo(() => ["size-12", "size-16", "size-20", "size-24", "size-28", "size-32"], []);
+	const variants = useMemo((): Array<"float" | "pulse" | "wiggle" | "orbit"> => ["float", "pulse", "wiggle", "orbit"], []);
 
 	useEffect(() => {
 		const generateParticles = () => {
@@ -52,7 +52,7 @@ const FloatingBackground = ({ particleCount = 8, enableMouseInteraction = true }
 		};
 
 		generateParticles();
-	}, [particleCount]);
+	}, [particleCount, sizes.length, colors, variants]);
 
 	useEffect(() => {
 		if (!enableMouseInteraction) return;
@@ -85,7 +85,7 @@ const FloatingBackground = ({ particleCount = 8, enableMouseInteraction = true }
 					transition: {
 						delay,
 						duration: 4,
-						ease: "easeInOut",
+						ease: "easeInOut" as const,
 						repeat: Infinity,
 					},
 				};
@@ -99,7 +99,7 @@ const FloatingBackground = ({ particleCount = 8, enableMouseInteraction = true }
 					transition: {
 						delay,
 						duration: 5,
-						ease: "easeInOut",
+						ease: "easeInOut" as const,
 						repeat: Infinity,
 					},
 				};
@@ -114,11 +114,51 @@ const FloatingBackground = ({ particleCount = 8, enableMouseInteraction = true }
 					transition: {
 						delay,
 						duration: 10,
-						ease: "linear",
+						ease: "linear" as const,
 						repeat: Infinity,
 					},
 				};
 			default: // 'float'
 				return {
 					animate: {
-						x: [0, 40, -30
+						x: [0, 40, -30, 20, 0],
+						y: [0, -30, 40, -20, 0],
+						...baseMouseEffect
+					},
+					transition: {
+						delay,
+						duration: 6,
+						ease: "easeInOut" as const,
+						repeat: Infinity,
+					},
+				};
+		}
+	};
+
+	return (
+		<div className="fixed inset-0 pointer-events-none overflow-hidden">
+			{particles.map((particle) => {
+				const animation = getAnimationVariant(
+					particle.variant,
+					particle.delay,
+					mousePosition.x,
+					mousePosition.y
+				);
+
+				return (
+					<motion.div
+						key={particle.id}
+						className={`absolute rounded-full ${particle.color} ${sizes[particle.size]} opacity-30`}
+						style={{
+							left: `${particle.x}%`,
+							top: `${particle.y}%`,
+						}}
+						{...animation}
+					/>
+				);
+			})}
+		</div>
+	);
+};
+
+export default FloatingBackground;
